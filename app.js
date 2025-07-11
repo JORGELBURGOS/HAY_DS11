@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const anteriorSolucionBtn = document.getElementById('anterior-solucion');
     const siguienteResultadosBtn = document.getElementById('siguiente-resultados');
     const anteriorResponsabilidadBtn = document.getElementById('anterior-responsabilidad');
+    const nuevaEvaluacionBtn = document.getElementById('nueva-evaluacion');
+    const nuevaEvaluacionBtn2 = document.getElementById('nueva-evaluacion-2');
     
     // Botones de acción
     const guardarEvaluacionBtn = document.getElementById('guardar-evaluacion');
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const responsabilidadNivel = document.getElementById('responsabilidad-nivel');
     const perfilSugerido = document.getElementById('perfil-sugerido');
 
-    // Tablas de referencia según metodología HAY
+    // Tablas de referencia según metodología HAY (corregidas)
     const TABLAS_HAY = {
         knowHow: {
             competencia: {
@@ -154,12 +156,12 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         
         nivelesHAY: [
-            { min: 0, max: 100, nivel: "HAY I", descripcion: "Puestos operativos o técnicos" },
-            { min: 101, max: 200, nivel: "HAY II", descripcion: "Profesionales junior" },
-            { min: 201, max: 350, nivel: "HAY III", descripcion: "Profesionales senior" },
-            { min: 351, max: 528, nivel: "HAY IV", descripcion: "Mandos medios" },
-            { min: 529, max: 800, nivel: "HAY V", descripcion: "Alta dirección" },
-            { min: 801, max: 1400, nivel: "HAY VI", descripcion: "Dirección ejecutiva" }
+            { min: 0, max: 100, nivel: "HAY 1", descripcion: "Puestos operativos o técnicos" },
+            { min: 101, max: 200, nivel: "HAY 2", descripcion: "Profesionales junior" },
+            { min: 201, max: 350, nivel: "HAY 3", descripcion: "Profesionales senior" },
+            { min: 351, max: 528, nivel: "HAY 4", descripcion: "Mandos medios" },
+            { min: 529, max: 800, nivel: "HAY 5", descripcion: "Alta dirección" },
+            { min: 801, max: 1400, nivel: "HAY 6", descripcion: "Dirección ejecutiva" }
         ]
     };
 
@@ -213,6 +215,10 @@ document.addEventListener('DOMContentLoaded', function() {
     anteriorResponsabilidadBtn.addEventListener('click', function() {
         showSection('responsabilidad');
     });
+    
+    // Nueva evaluación
+    nuevaEvaluacionBtn.addEventListener('click', resetearEvaluacion);
+    nuevaEvaluacionBtn2.addEventListener('click', resetearEvaluacion);
     
     // Botones de acción
     guardarEvaluacionBtn.addEventListener('click', function() {
@@ -340,9 +346,9 @@ document.addEventListener('DOMContentLoaded', function() {
             responsabilidadResult.textContent = responsabilidadScore;
             puntajeTotal.textContent = total;
             
-            // Determinar nivel HAY
+            // Determinar nivel HAY (convertido a números arábigos)
             const nivel = TABLAS_HAY.nivelesHAY.find(n => total >= n.min && total <= n.max) || 
-                         { nivel: "No determinado", descripcion: "Fuera de rango estándar" };
+                         { nivel: "HAY No determinado", descripcion: "Fuera de rango estándar" };
             
             nivelHay.textContent = nivel.nivel;
             perfilSugerido.textContent = nivel.descripcion;
@@ -381,6 +387,44 @@ document.addEventListener('DOMContentLoaded', function() {
         if (puntaje <= 200) return "Autónomo";
         if (puntaje <= 350) return "Directivo";
         return "Estratégico";
+    }
+    
+    function resetearEvaluacion() {
+        // Limpiar formulario
+        document.getElementById('nombre-puesto').value = '';
+        document.getElementById('area-departamento').value = '';
+        document.getElementById('descripcion-general').value = '';
+        document.getElementById('responsabilidades').value = '';
+        
+        // Resetear selects a valores por defecto
+        document.getElementById('competencia-tecnica').selectedIndex = 2;
+        document.getElementById('planificacion').selectedIndex = 1;
+        document.getElementById('comunicacion').selectedIndex = 1;
+        document.getElementById('complejidad').selectedIndex = 2;
+        document.getElementById('marco-referencia').selectedIndex = 3;
+        document.getElementById('libertad-actuar').selectedIndex = 2;
+        document.getElementById('naturaleza-impacto').selectedIndex = 2;
+        document.getElementById('magnitud').selectedIndex = 2;
+        
+        // Resetear resultados
+        knowHowResult.textContent = '0';
+        problemasResult.textContent = '0';
+        responsabilidadResult.textContent = '0';
+        puntajeTotal.textContent = '0';
+        nivelHay.textContent = '-';
+        perfilSugerido.textContent = 'Complete la evaluación para ver el perfil sugerido';
+        knowHowNivel.textContent = '-';
+        problemasNivel.textContent = '-';
+        responsabilidadNivel.textContent = '-';
+        
+        // Volver a la primera sección
+        showSection('descripcion');
+        
+        // Resetear navegación
+        navItems.forEach(navItem => navItem.classList.remove('active'));
+        document.querySelector('[data-section="descripcion"]').classList.add('active');
+        
+        mostrarNotificacion('Nueva evaluación iniciada', 'success');
     }
     
     function generarPDF() {
@@ -571,6 +615,11 @@ document.addEventListener('DOMContentLoaded', function() {
             puntajeTotal.textContent = evaluacion.total;
             nivelHay.textContent = evaluacion.nivel;
             perfilSugerido.textContent = evaluacion.perfil;
+            
+            // Determinar niveles individuales
+            knowHowNivel.textContent = determinarNivelKnowHow(parseInt(evaluacion.knowHow));
+            problemasNivel.textContent = determinarNivelProblemas(parseInt(evaluacion.problemas));
+            responsabilidadNivel.textContent = determinarNivelResponsabilidad(parseInt(evaluacion.responsabilidad));
             
             // Ir a resultados
             showSection('resultados');
