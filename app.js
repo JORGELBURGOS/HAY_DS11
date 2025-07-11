@@ -118,13 +118,47 @@ document.addEventListener('DOMContentLoaded', function() {
                     'IV': [22, 29, 38, 50, 66, 87],
                     'V': [29, 38, 50, 66, 87, 115]
                 },
-                // ... (completar con todas las combinaciones)
+                'C': { // Estandarizado
+                    'I': [12, 14, 19, 25, 33, 43],
+                    'II': [14, 16, 22, 29, 38, 50],
+                    'III': [19, 25, 33, 43, 57, 76],
+                    'IV': [25, 33, 43, 57, 76, 100],
+                    'V': [33, 43, 57, 76, 100, 132]
+                },
+                'D': { // Regulación General
+                    'I': [14, 16, 22, 29, 38, 50],
+                    'II': [16, 19, 25, 33, 43, 57],
+                    'III': [22, 29, 38, 50, 66, 87],
+                    'IV': [29, 38, 50, 66, 87, 115],
+                    'V': [38, 50, 66, 87, 115, 152]
+                },
+                'E': { // Dirección
+                    'I': [16, 19, 25, 33, 43, 57],
+                    'II': [19, 22, 29, 38, 50, 66],
+                    'III': [25, 33, 43, 57, 76, 100],
+                    'IV': [33, 43, 57, 76, 100, 132],
+                    'V': [43, 57, 76, 100, 132, 175]
+                },
+                'F': { // Dirección General
+                    'I': [19, 22, 29, 38, 50, 66],
+                    'II': [22, 25, 33, 43, 57, 76],
+                    'III': [29, 38, 50, 66, 87, 115],
+                    'IV': [38, 50, 66, 87, 115, 152],
+                    'V': [50, 66, 87, 115, 152, 200]
+                },
+                'G': { // Guía
+                    'I': [22, 25, 33, 43, 57, 76],
+                    'II': [25, 29, 38, 50, 66, 87],
+                    'III': [33, 43, 57, 76, 100, 132],
+                    'IV': [43, 57, 76, 100, 132, 175],
+                    'V': [57, 76, 100, 132, 175, 230]
+                },
                 'H': { // Guía Estratégica
-                    'I': [152, 200, 264, 350, 460, 608],
-                    'II': [175, 230, 304, 400, 528, 700],
-                    'III': [200, 264, 350, 460, 608, 800],
-                    'IV': [230, 304, 400, 528, 700, 920],
-                    'V': [264, 350, 460, 608, 800, 1056]
+                    'I': [25, 29, 38, 50, 66, 87],
+                    'II': [29, 33, 43, 57, 76, 100],
+                    'III': [38, 50, 66, 87, 115, 152],
+                    'IV': [50, 66, 87, 115, 152, 200],
+                    'V': [66, 87, 115, 152, 200, 264]
                 }
             }
         },
@@ -275,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const magnitud = document.getElementById('magnitud').value[0]; // Número (1-4) o N
         
         let magnitudIndex;
-        if (magnitud === 'N') magnitudIndex = 4; // Para magnitud no cuantificada
+        if (magnitud === 'N') magnitudIndex = 5; // Para magnitud no cuantificada
         else magnitudIndex = parseInt(magnitud) - 1; // Convertir a índice (0-3)
         
         const impactoIndex = Math.min(Math.floor((TABLAS_HAY.responsabilidad.impacto[impacto] - 1) / 2), 4);
