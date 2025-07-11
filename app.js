@@ -73,12 +73,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         solucionProblemas: {
             complejidad: {
-                '1': 0.1, '2': 0.12, '3': 0.14, '4': 0.16, '5': 0.19
+                '1': 10, '2': 12, '3': 14, '4': 16, '5': 19
             },
             
             marcoReferencia: {
                 '0.1': 'A', '0.12': 'B', '0.14': 'C', '0.16': 'D', '0.19': 'E', 
                 '0.22': 'F', '0.25': 'G', '0.29': 'H'
+            },
+            
+            porcentajes: {
+                'A': 0.1, 'B': 0.12, 'C': 0.14, 'D': 0.16, 'E': 0.19,
+                'F': 0.22, 'G': 0.25, 'H': 0.29
             }
         },
         
@@ -92,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             
             magnitud: {
-                '1': '1', '2': '2', '3': '3', '4': '4', '5': 'N'
+                '1': 1, '2': 2, '3': 3, '4': 4, '5': 5
             },
             
             puntajes: {
@@ -101,56 +106,64 @@ document.addEventListener('DOMContentLoaded', function() {
                     'II': [10, 12, 16, 22, 29, 38],
                     'III': [14, 19, 25, 33, 43, 57],
                     'IV': [19, 25, 33, 43, 57, 76],
-                    'V': [25, 33, 43, 57, 76, 100]
+                    'V': [25, 33, 43, 57, 76, 100],
+                    'VI': [33, 43, 57, 76, 100, 132]
                 },
                 'B': {
                     'I': [10, 12, 16, 22, 29, 38],
                     'II': [12, 14, 19, 25, 33, 43],
                     'III': [16, 22, 29, 38, 50, 66],
                     'IV': [22, 29, 38, 50, 66, 87],
-                    'V': [29, 38, 50, 66, 87, 115]
+                    'V': [29, 38, 50, 66, 87, 115],
+                    'VI': [38, 50, 66, 87, 115, 152]
                 },
                 'C': {
                     'I': [12, 14, 19, 25, 33, 43],
                     'II': [14, 16, 22, 29, 38, 50],
                     'III': [19, 25, 33, 43, 57, 76],
                     'IV': [25, 33, 43, 57, 76, 100],
-                    'V': [33, 43, 57, 76, 100, 132]
+                    'V': [33, 43, 57, 76, 100, 132],
+                    'VI': [43, 57, 76, 100, 132, 175]
                 },
                 'D': {
                     'I': [14, 16, 22, 29, 38, 50],
                     'II': [16, 19, 25, 33, 43, 57],
                     'III': [22, 29, 38, 50, 66, 87],
                     'IV': [29, 38, 50, 66, 87, 115],
-                    'V': [38, 50, 66, 87, 115, 152]
+                    'V': [38, 50, 66, 87, 115, 152],
+                    'VI': [50, 66, 87, 115, 152, 200]
                 },
                 'E': {
                     'I': [16, 19, 25, 33, 43, 57],
                     'II': [19, 22, 29, 38, 50, 66],
                     'III': [25, 33, 43, 57, 76, 100],
                     'IV': [33, 43, 57, 76, 100, 132],
-                    'V': [43, 57, 76, 100, 132, 175]
+                    'V': [43, 57, 76, 100, 132, 175],
+                    'VI': [57, 76, 100, 132, 175, 230]
                 },
                 'F': {
                     'I': [19, 22, 29, 38, 50, 66],
                     'II': [22, 25, 33, 43, 57, 76],
                     'III': [29, 38, 50, 66, 87, 115],
                     'IV': [38, 50, 66, 87, 115, 152],
-                    'V': [50, 66, 87, 115, 152, 200]
+                    'V': [50, 66, 87, 115, 152, 200],
+                    'VI': [66, 87, 115, 152, 200, 264]
                 },
                 'G': {
                     'I': [22, 25, 33, 43, 57, 76],
                     'II': [25, 29, 38, 50, 66, 87],
                     'III': [33, 43, 57, 76, 100, 132],
                     'IV': [43, 57, 76, 100, 132, 175],
-                    'V': [57, 76, 100, 132, 175, 230]
+                    'V': [57, 76, 100, 132, 175, 230],
+                    'VI': [76, 100, 132, 175, 230, 304]
                 },
                 'H': {
                     'I': [25, 29, 38, 50, 66, 87],
                     'II': [29, 33, 43, 57, 76, 100],
                     'III': [38, 50, 66, 87, 115, 152],
                     'IV': [50, 66, 87, 115, 152, 200],
-                    'V': [66, 87, 115, 152, 200, 264]
+                    'V': [66, 87, 115, 152, 200, 264],
+                    'VI': [87, 115, 152, 200, 264, 350]
                 }
             }
         },
@@ -301,13 +314,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // 2. Calcular Solución de Problemas
             const complejidadSelect = document.getElementById('complejidad');
             const complejidadKey = complejidadSelect.value;
-            const complejidadValue = TABLAS_HAY.solucionProblemas.complejidad[complejidadKey] || 0.1;
+            const complejidadValue = TABLAS_HAY.solucionProblemas.complejidad[complejidadKey] || 10;
             
             const marcoRefSelect = document.getElementById('marco-referencia');
             const marcoRefValue = parseFloat(marcoRefSelect.value);
             const marcoRefKey = TABLAS_HAY.solucionProblemas.marcoReferencia[marcoRefValue.toString()];
+            const porcentajeSP = TABLAS_HAY.solucionProblemas.porcentajes[marcoRefKey] || 0.1;
             
-            const problemasScore = Math.round(knowHowScore * complejidadValue * marcoRefValue);
+            const problemasScore = Math.round(knowHowScore * (complejidadValue / 100) * porcentajeSP * 100);
             
             // 3. Calcular Responsabilidad
             const libertadSelect = document.getElementById('libertad-actuar');
@@ -320,21 +334,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const magnitudSelect = document.getElementById('magnitud');
             const magnitudKey = magnitudSelect.value;
-            const magnitudLetter = TABLAS_HAY.responsabilidad.magnitud[magnitudKey];
+            const magnitudValue = TABLAS_HAY.responsabilidad.magnitud[magnitudKey];
             
-            let magnitudIndex;
-            if (magnitudLetter === 'N') {
-                magnitudIndex = 5;
-            } else {
-                magnitudIndex = parseInt(magnitudLetter) - 1;
-                if (magnitudIndex > 3) magnitudIndex = 3;
-            }
+            let magnitudIndex = Math.min(magnitudValue - 1, 5);
             
             let responsabilidadScore = 0;
             if (TABLAS_HAY.responsabilidad.puntajes[libertadKey] && 
                 TABLAS_HAY.responsabilidad.puntajes[libertadKey][impactoLetter]) {
                 const puntajes = TABLAS_HAY.responsabilidad.puntajes[libertadKey][impactoLetter];
-                responsabilidadScore = puntajes[Math.min(magnitudIndex, puntajes.length - 1)] || 0;
+                responsabilidadScore = puntajes[magnitudIndex] || 0;
             }
             
             // 4. Calcular total
