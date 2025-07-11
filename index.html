@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Puestos - Metodología HAY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo" class="logo" id="logo-img">
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="active" data-section="descripcion-puesto"><a href="#">Descripción del Puesto</a></li>
+                    <li data-section="evaluacion-hay"><a href="#">Evaluación HAY</a></li>
+                    <li data-section="resultados"><a href="#">Resultados</a></li>
+                    <li data-section="evaluaciones-guardadas"><a href="#">Evaluaciones Guardadas</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <section id="descripcion-puesto" class="content-section active">
+                <h1>Descripción del Puesto</h1>
+                <form id="descripcion-form">
+                    <div class="form-group">
+                        <label for="nombre-puesto">Nombre del Puesto</label>
+                        <input type="text" id="nombre-puesto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="area-departamento">Área/Departamento</label>
+                        <input type="text" id="area-departamento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion-general">Descripción General</label>
+                        <textarea id="descripcion-general" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="responsabilidades">Responsabilidades Principales (Separar por puntos)</label>
+                        <textarea id="responsabilidades" rows="6" placeholder="Ejemplo:&#10;- Responsabilidad 1&#10;- Responsabilidad 2" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha-evaluacion">Fecha de Evaluación</label>
+                        <input type="date" id="fecha-evaluacion" required>
+                    </div>
+                    <button type="button" id="siguiente-evaluacion" class="btn-primary">Siguiente: Evaluación HAY</button>
+                </form>
+            </section>
+
+            <section id="evaluacion-hay" class="content-section">
+                <h1>Evaluación HAY</h1>
+                <div class="hay-factors">
+                    <div class="factor-card">
+                        <h2>Know-How</h2>
+                        <p>Conocimientos y habilidades necesarias para el puesto</p>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="8" value="4" class="slider" id="know-how-slider">
+                            <div class="slider-labels">
+                                <span>1 - Básico</span>
+                                <span id="know-how-value">4</span>
+                                <span>8 - Experto</span>
+                            </div>
+                        </div>
+                        <div class="factor-description" id="know-how-description">
+                            <strong>Nivel 4:</strong> Conocimiento profesional especializado en un área.
+                        </div>
+                    </div>
+
+                    <div class="factor-card">
+                        <h2>Resolución de Problemas</h2>
+                        <p>Complejidad en la toma de decisiones y solución de problemas</p>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="8" value="4" class="slider" id="problemas-slider">
+                            <div class="slider-labels">
+                                <span>1 - Rutinario</span>
+                                <span id="problemas-value">4</span>
+                                <span>8 - Estratégico</span>
+                            </div>
+                        </div>
+                        <div class="factor-description" id="problemas-description">
+                            <strong>Nivel 4:</strong> Problemas que requieren análisis e interpretación de datos.
+                        </div>
+                    </div>
+
+                    <div class="factor-card">
+                        <h2>Responsabilidad</h2>
+                        <p>Impacto y autonomía en la toma de decisiones</p>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="8" value="4" class="slider" id="responsabilidad-slider">
+                            <div class="slider-labels">
+                                <span>1 - Supervisado</span>
+                                <span id="responsabilidad-value">4</span>
+                                <span>8 - Directivo</span>
+                            </div>
+                        </div>
+                        <div class="factor-description" id="responsabilidad-description">
+                            <strong>Nivel 4:</strong> Responsabilidad por resultados de un departamento o área.
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons-container">
+                    <button type="button" id="anterior-descripcion" class="btn-secondary">Anterior</button>
+                    <button type="button" id="siguiente-resultados" class="btn-primary">Siguiente: Ver Resultados</button>
+                </div>
+            </section>
+
+            <section id="resultados" class="content-section">
+                <h1>Resultados de la Evaluación</h1>
+                <div class="results-container">
+                    <div class="result-card">
+                        <h2>Puntaje Total</h2>
+                        <div class="score" id="puntaje-total">12</div>
+                        <div class="hay-level" id="nivel-hay">Nivel Medio</div>
+                    </div>
+                    
+                    <div class="result-details">
+                        <h3>Desglose por Factores</h3>
+                        <table>
+                            <tr>
+                                <th>Factor</th>
+                                <th>Puntaje</th>
+                            </tr>
+                            <tr>
+                                <td>Know-How</td>
+                                <td id="know-how-result">4</td>
+                            </tr>
+                            <tr>
+                                <td>Resolución de Problemas</td>
+                                <td id="problemas-result">4</td>
+                            </tr>
+                            <tr>
+                                <td>Responsabilidad</td>
+                                <td id="responsabilidad-result">4</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="profile-suggestion">
+                        <h3>Perfil Sugerido</h3>
+                        <p id="perfil-sugerido">Profesional especializado con responsabilidad sobre procesos específicos.</p>
+                    </div>
+                </div>
+                
+                <div class="buttons-container">
+                    <button type="button" id="anterior-evaluacion" class="btn-secondary">Anterior</button>
+                    <button type="button" id="guardar-evaluacion" class="btn-primary">Guardar Evaluación</button>
+                    <button type="button" id="generar-pdf" class="btn-primary">Generar PDF</button>
+                </div>
+            </section>
+
+            <section id="evaluaciones-guardadas" class="content-section">
+                <h1>Evaluaciones Guardadas</h1>
+                <div class="saved-evaluations" id="lista-evaluaciones">
+                    <!-- Las evaluaciones guardadas se cargarán aquí dinámicamente -->
+                    <p class="no-evaluations">No hay evaluaciones guardadas.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para guardar evaluación -->
+    <div id="save-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Guardar Evaluación</h2>
+            <p>Seleccione cómo desea guardar la evaluación:</p>
+            <div class="modal-buttons">
+                <button id="guardar-pdf" class="btn-primary">Guardar como PDF</button>
+                <button id="guardar-local" class="btn-primary">Guardar en Local</button>
+                <button id="cancelar-guardar" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificación -->
+    <div id="notification" class="notification">
+        <span id="notification-message"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
