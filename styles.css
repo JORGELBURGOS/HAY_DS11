@@ -120,7 +120,6 @@ label {
 }
 
 input[type="text"],
-input[type="date"],
 textarea {
     width: 100%;
     padding: 12px;
@@ -132,7 +131,6 @@ textarea {
 }
 
 input[type="text"]:focus,
-input[type="date"]:focus,
 textarea:focus {
     outline: none;
     border-color: var(--secondary-color);
@@ -339,7 +337,6 @@ th {
     font-style: italic;
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -378,7 +375,6 @@ th {
     margin-top: 25px;
 }
 
-/* Notification */
 .notification {
     position: fixed;
     bottom: 20px;
@@ -399,7 +395,6 @@ th {
     opacity: 1;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;

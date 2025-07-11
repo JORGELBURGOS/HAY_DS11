@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Elementos del DOM
     const navItems = document.querySelectorAll('.nav-menu li');
     const contentSections = document.querySelectorAll('.content-section');
-    const descripcionForm = document.getElementById('descripcion-form');
     const siguienteEvaluacionBtn = document.getElementById('siguiente-evaluacion');
     const anteriorDescripcionBtn = document.getElementById('anterior-descripcion');
     const siguienteResultadosBtn = document.getElementById('siguiente-resultados');
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const responsabilidadResult = document.getElementById('responsabilidad-result');
     const perfilSugerido = document.getElementById('perfil-sugerido');
 
-    // Descripciones de niveles para cada factor
+    // Descripciones de niveles
     const knowHowDescriptions = {
         1: "<strong>Nivel 1:</strong> Conocimientos básicos elementales.",
         2: "<strong>Nivel 2:</strong> Conocimientos operativos básicos.",
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
         8: "<strong>Nivel 8:</strong> Responsabilidad estratégica y de liderazgo máximo."
     };
 
-    // Perfiles sugeridos basados en el puntaje total
     const perfilesSugeridos = {
         "8-12": "Perfil operativo o técnico con responsabilidad limitada.",
         "13-17": "Profesional especializado con responsabilidad sobre procesos específicos.",
@@ -82,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
         "22-25": "Alta dirección con responsabilidad estratégica y organizacional."
     };
 
-    // Niveles HAY basados en el puntaje total
     const nivelesHAY = {
         "8-12": "Nivel Básico",
         "13-17": "Nivel Medio",
@@ -90,48 +87,42 @@ document.addEventListener('DOMContentLoaded', function() {
         "22-25": "Nivel Ejecutivo"
     };
 
-    // Event listeners para navegación
+    // Navegación
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             const sectionId = this.getAttribute('data-section');
             showSection(sectionId);
             
-            // Actualizar clase activa en navegación
             navItems.forEach(navItem => navItem.classList.remove('active'));
             this.classList.add('active');
             
-            // Si es la sección de evaluaciones guardadas, cargarlas
             if (sectionId === 'evaluaciones-guardadas') {
                 cargarEvaluacionesGuardadas();
             }
         });
     });
 
-    // Botones de navegación entre secciones
+    // Botones de navegación
     siguienteEvaluacionBtn.addEventListener('click', function() {
         if (validarDescripcionPuesto()) {
             showSection('evaluacion-hay');
-            updateNavActive('evaluacion-hay');
         }
     });
 
     anteriorDescripcionBtn.addEventListener('click', function() {
         showSection('descripcion-puesto');
-        updateNavActive('descripcion-puesto');
     });
 
     siguienteResultadosBtn.addEventListener('click', function() {
         calcularResultados();
         showSection('resultados');
-        updateNavActive('resultados');
     });
 
     anteriorEvaluacionBtn.addEventListener('click', function() {
         showSection('evaluacion-hay');
-        updateNavActive('evaluacion-hay');
     });
 
-    // Event listeners para sliders
+    // Sliders
     knowHowSlider.addEventListener('input', function() {
         knowHowValue.textContent = this.value;
         knowHowDescription.innerHTML = knowHowDescriptions[this.value];
@@ -147,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         responsabilidadDescription.innerHTML = responsabilidadDescriptions[this.value];
     });
 
-    // Botones de guardar y generar PDF
+    // Guardar y generar PDF
     guardarEvaluacionBtn.addEventListener('click', function() {
         saveModal.style.display = 'flex';
     });
@@ -156,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         generarPDF();
     });
 
-    // Modal de guardar evaluación
+    // Modal
     closeModalBtn.addEventListener('click', function() {
         saveModal.style.display = 'none';
     });
@@ -175,14 +166,13 @@ document.addEventListener('DOMContentLoaded', function() {
         saveModal.style.display = 'none';
     });
 
-    // Cerrar modal al hacer clic fuera del contenido
     window.addEventListener('click', function(event) {
         if (event.target === saveModal) {
             saveModal.style.display = 'none';
         }
     });
 
-    // Funciones auxiliares
+    // Funciones
     function showSection(sectionId) {
         contentSections.forEach(section => {
             section.classList.remove('active');
@@ -190,9 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 section.classList.add('active');
             }
         });
-    }
-
-    function updateNavActive(sectionId) {
+        
         navItems.forEach(item => {
             item.classList.remove('active');
             if (item.getAttribute('data-section') === sectionId) {
@@ -206,9 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const areaDepartamento = document.getElementById('area-departamento').value.trim();
         const descripcionGeneral = document.getElementById('descripcion-general').value.trim();
         const responsabilidades = document.getElementById('responsabilidades').value.trim();
-        const fechaEvaluacion = document.getElementById('fecha-evaluacion').value;
 
-        if (!nombrePuesto || !areaDepartamento || !descripcionGeneral || !responsabilidades || !fechaEvaluacion) {
+        if (!nombrePuesto || !areaDepartamento || !descripcionGeneral || !responsabilidades) {
             mostrarNotificacion('Por favor complete todos los campos requeridos', 'error');
             return false;
         }
@@ -220,17 +207,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const knowHow = parseInt(knowHowSlider.value);
         const problemas = parseInt(problemasSlider.value);
         const responsabilidad = parseInt(responsabilidadSlider.value);
-        
-        // Cálculo según metodología HAY (simplificado)
         const total = knowHow + problemas + responsabilidad;
         
-        // Actualizar resultados
         knowHowResult.textContent = knowHow;
         problemasResult.textContent = problemas;
         responsabilidadResult.textContent = responsabilidad;
         puntajeTotal.textContent = total;
         
-        // Determinar nivel HAY y perfil sugerido
         let nivel = '';
         let perfil = '';
         
@@ -253,15 +236,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function generarPDF() {
-        // Obtener datos del formulario
         const nombrePuesto = document.getElementById('nombre-puesto').value;
         const areaDepartamento = document.getElementById('area-departamento').value;
         const descripcionGeneral = document.getElementById('descripcion-general').value;
         const responsabilidades = document.getElementById('responsabilidades').value.split('\n').filter(item => item.trim() !== '');
-        const fechaEvaluacion = document.getElementById('fecha-evaluacion').value;
-        const fechaFormateada = new Date(fechaEvaluacion).toLocaleDateString('es-ES');
+        const fechaFormateada = new Date().toLocaleDateString('es-ES');
         
-        // Obtener resultados
         const knowHow = knowHowResult.textContent;
         const problemas = problemasResult.textContent;
         const responsabilidad = responsabilidadResult.textContent;
@@ -269,12 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const nivel = nivelHay.textContent;
         const perfil = perfilSugerido.textContent;
         
-        // Crear PDF
         const doc = new jsPDF();
         
         // Portada
         doc.setFontSize(22);
-        doc.setTextColor(44, 62, 80); // Azul oscuro
+        doc.setTextColor(44, 62, 80);
         doc.text('Evaluación de Puesto - Metodología HAY', 105, 30, { align: 'center' });
         
         doc.setFontSize(18);
@@ -291,10 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.setTextColor(44, 62, 80);
         doc.text('Resultados de la Evaluación', 20, 30);
         
-        doc.setFontSize(14);
-        doc.setTextColor(0, 0, 0);
-        
-        // Tabla de resultados
         doc.autoTable({
             startY: 40,
             head: [['Factor', 'Puntaje']],
@@ -312,29 +287,25 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             alternateRowStyles: {
                 fillColor: [240, 240, 240]
-            },
-            margin: { top: 40 }
+            }
         });
         
-        // Nivel y perfil
         doc.setFontSize(14);
         doc.text(`Nivel HAY: ${nivel}`, 20, doc.autoTable.previous.finalY + 20);
         doc.text(`Perfil Sugerido: ${perfil}`, 20, doc.autoTable.previous.finalY + 30);
         
-        // Descripción del puesto
+        // Descripción
         doc.addPage();
         doc.setFontSize(18);
         doc.setTextColor(44, 62, 80);
         doc.text('Descripción del Puesto', 20, 30);
         
         doc.setFontSize(14);
-        doc.setTextColor(0, 0, 0);
         doc.text('Descripción General:', 20, 45);
         doc.text(descripcionGeneral, 20, 55, { maxWidth: 170 });
         
         doc.text('Responsabilidades Principales:', 20, doc.previousAutoTable ? doc.previousAutoTable.finalY + 30 : 100);
         
-        // Lista de responsabilidades
         let yPos = doc.previousAutoTable ? doc.previousAutoTable.finalY + 40 : 110;
         responsabilidades.forEach(responsabilidad => {
             doc.setFontSize(12);
@@ -342,54 +313,29 @@ document.addEventListener('DOMContentLoaded', function() {
             yPos += 7;
         });
         
-        // Guardar PDF
         doc.save(`Evaluacion_HAY_${nombrePuesto.replace(/ /g, '_')}.pdf`);
-        
         mostrarNotificacion('PDF generado con éxito', 'success');
     }
 
     function guardarEnLocalStorage() {
-        // Obtener datos del formulario
-        const nombrePuesto = document.getElementById('nombre-puesto').value;
-        const areaDepartamento = document.getElementById('area-departamento').value;
-        const descripcionGeneral = document.getElementById('descripcion-general').value;
-        const responsabilidades = document.getElementById('responsabilidades').value;
-        const fechaEvaluacion = document.getElementById('fecha-evaluacion').value;
-        
-        // Obtener resultados
-        const knowHow = knowHowResult.textContent;
-        const problemas = problemasResult.textContent;
-        const responsabilidad = responsabilidadResult.textContent;
-        const total = puntajeTotal.textContent;
-        const nivel = nivelHay.textContent;
-        const perfil = perfilSugerido.textContent;
-        
-        // Crear objeto de evaluación
         const evaluacion = {
             id: Date.now(),
-            nombrePuesto,
-            areaDepartamento,
-            descripcionGeneral,
-            responsabilidades,
-            fechaEvaluacion,
-            knowHow,
-            problemas,
-            responsabilidad,
-            total,
-            nivel,
-            perfil,
+            nombrePuesto: document.getElementById('nombre-puesto').value,
+            areaDepartamento: document.getElementById('area-departamento').value,
+            descripcionGeneral: document.getElementById('descripcion-general').value,
+            responsabilidades: document.getElementById('responsabilidades').value,
+            knowHow: knowHowResult.textContent,
+            problemas: problemasResult.textContent,
+            responsabilidad: responsabilidadResult.textContent,
+            total: puntajeTotal.textContent,
+            nivel: nivelHay.textContent,
+            perfil: perfilSugerido.textContent,
             fechaGuardado: new Date().toISOString()
         };
         
-        // Obtener evaluaciones existentes o inicializar array
         let evaluaciones = JSON.parse(localStorage.getItem('evaluacionesHAY')) || [];
-        
-        // Agregar nueva evaluación
         evaluaciones.push(evaluacion);
-        
-        // Guardar en localStorage
         localStorage.setItem('evaluacionesHAY', JSON.stringify(evaluaciones));
-        
         mostrarNotificacion('Evaluación guardada localmente', 'success');
     }
 
@@ -404,7 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
         listaEvaluaciones.innerHTML = '';
         
         evaluaciones.sort((a, b) => new Date(b.fechaGuardado) - new Date(a.fechaGuardado)).forEach(evaluacion => {
-            const fecha = new Date(evaluacion.fechaEvaluacion).toLocaleDateString('es-ES');
             const fechaGuardado = new Date(evaluacion.fechaGuardado).toLocaleString('es-ES');
             
             const evaluacionElement = document.createElement('div');
@@ -412,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
             evaluacionElement.innerHTML = `
                 <div class="evaluation-info">
                     <h3>${evaluacion.nombrePuesto}</h3>
-                    <p>${evaluacion.areaDepartamento} | Evaluado el ${fecha} | Puntaje: ${evaluacion.total} (${evaluacion.nivel})</p>
+                    <p>${evaluacion.areaDepartamento} | Puntaje: ${evaluacion.total} (${evaluacion.nivel})</p>
                     <p><small>Guardado el ${fechaGuardado}</small></p>
                 </div>
                 <div class="evaluation-actions">
@@ -428,42 +373,36 @@ document.addEventListener('DOMContentLoaded', function() {
     function mostrarNotificacion(mensaje, tipo = 'success') {
         notificationMessage.textContent = mensaje;
         
-        // Cambiar color según tipo
         if (tipo === 'error') {
-            notification.style.backgroundColor = var(--error-color);
+            notification.style.backgroundColor = 'var(--error-color)';
         } else if (tipo === 'warning') {
-            notification.style.backgroundColor = var(--warning-color);
+            notification.style.backgroundColor = 'var(--warning-color)';
         } else {
-            notification.style.backgroundColor = var(--success-color);
+            notification.style.backgroundColor = 'var(--success-color)';
         }
         
         notification.classList.add('show');
         
-        // Ocultar después de 3 segundos
         setTimeout(() => {
             notification.classList.remove('show');
         }, 3000);
     }
 
-    // Funciones globales para los botones de evaluaciones guardadas
+    // Funciones globales
     window.verEvaluacion = function(id) {
         const evaluaciones = JSON.parse(localStorage.getItem('evaluacionesHAY')) || [];
         const evaluacion = evaluaciones.find(e => e.id === id);
         
         if (evaluacion) {
-            // Llenar el formulario con los datos de la evaluación
             document.getElementById('nombre-puesto').value = evaluacion.nombrePuesto;
             document.getElementById('area-departamento').value = evaluacion.areaDepartamento;
             document.getElementById('descripcion-general').value = evaluacion.descripcionGeneral;
             document.getElementById('responsabilidades').value = evaluacion.responsabilidades;
-            document.getElementById('fecha-evaluacion').value = evaluacion.fechaEvaluacion.split('T')[0];
             
-            // Establecer los sliders
             knowHowSlider.value = evaluacion.knowHow;
             problemasSlider.value = evaluacion.problemas;
             responsabilidadSlider.value = evaluacion.responsabilidad;
             
-            // Actualizar displays
             knowHowValue.textContent = evaluacion.knowHow;
             problemasValue.textContent = evaluacion.problemas;
             responsabilidadValue.textContent = evaluacion.responsabilidad;
@@ -471,13 +410,8 @@ document.addEventListener('DOMContentLoaded', function() {
             problemasDescription.innerHTML = problemasDescriptions[evaluacion.problemas];
             responsabilidadDescription.innerHTML = responsabilidadDescriptions[evaluacion.responsabilidad];
             
-            // Mostrar resultados
             calcularResultados();
-            
-            // Navegar a la sección de resultados
             showSection('resultados');
-            updateNavActive('resultados');
-            
             mostrarNotificacion(`Evaluación de "${evaluacion.nombrePuesto}" cargada`, 'success');
         }
     };
@@ -499,8 +433,4 @@ document.addEventListener('DOMContentLoaded', function() {
     knowHowDescription.innerHTML = knowHowDescriptions[knowHowSlider.value];
     problemasDescription.innerHTML = problemasDescriptions[problemasSlider.value];
     responsabilidadDescription.innerHTML = responsabilidadDescriptions[responsabilidadSlider.value];
-    
-    // Establecer fecha actual por defecto
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('fecha-evaluacion').value = today;
 });

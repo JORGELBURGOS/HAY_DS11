@@ -45,10 +45,6 @@
                         <label for="responsabilidades">Responsabilidades Principales (Separar por puntos)</label>
                         <textarea id="responsabilidades" rows="6" placeholder="Ejemplo:&#10;- Responsabilidad 1&#10;- Responsabilidad 2" required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="fecha-evaluacion">Fecha de Evaluación</label>
-                        <input type="date" id="fecha-evaluacion" required>
-                    </div>
                     <button type="button" id="siguiente-evaluacion" class="btn-primary">Siguiente: Evaluación HAY</button>
                 </form>
             </section>
@@ -157,14 +153,12 @@
             <section id="evaluaciones-guardadas" class="content-section">
                 <h1>Evaluaciones Guardadas</h1>
                 <div class="saved-evaluations" id="lista-evaluaciones">
-                    <!-- Las evaluaciones guardadas se cargarán aquí dinámicamente -->
                     <p class="no-evaluations">No hay evaluaciones guardadas.</p>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- Modal para guardar evaluación -->
     <div id="save-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -178,7 +172,6 @@
         </div>
     </div>
 
-    <!-- Notificación -->
     <div id="notification" class="notification">
         <span id="notification-message"></span>
     </div>
