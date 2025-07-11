@@ -239,46 +239,55 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // 1. Calcular Know-How
             const competenciaSelect = document.getElementById('competencia-tecnica');
-            const competenciaKey = competenciaSelect.value;
-            const competenciaValue = TABLAS_HAY.knowHow.competencia[competenciaKey] || 0;
-            
+            const competenciaValue = parseInt(competenciaSelect.value);
+
             const planificacionSelect = document.getElementById('planificacion');
             const planificacionKey = planificacionSelect.value;
-            
+
             const comunicacionSelect = document.getElementById('comunicacion');
             const comunicacionKey = comunicacionSelect.value;
-            const factorComunicacion = TABLAS_HAY.knowHow.comunicacion[comunicacionKey] || 1;
-            
+
             // Obtener valor base de planificación según la tabla
-            const planificacionValue = TABLAS_HAY.knowHow.planificacion[planificacionKey][comunicacionKey] || 0;
-            
+            let planificacionValue = 0;
+            if (planificacionKey === 'T') {
+                planificacionValue = TABLAS_HAY.knowHow.planificacion.T[comunicacionKey];
+            } else if (planificacionKey === 'I') {
+                planificacionValue = TABLAS_HAY.knowHow.planificacion.I[comunicacionKey];
+            } else if (planificacionKey === 'II') {
+                planificacionValue = TABLAS_HAY.knowHow.planificacion.II[comunicacionKey];
+            } else if (planificacionKey === 'III') {
+                planificacionValue = TABLAS_HAY.knowHow.planificacion.III[comunicacionKey];
+            } else if (planificacionKey === 'IV') {
+                planificacionValue = TABLAS_HAY.knowHow.planificacion.IV[comunicacionKey];
+            }
+
             // Calcular Know-How según metodología HAY
-            const knowHowScore = Math.round(competenciaValue * factorComunicacion);
+            const knowHowScore = Math.round(competenciaValue + planificacionValue);
             
             // 2. Calcular Solución de Problemas
             const complejidadSelect = document.getElementById('complejidad');
             const complejidadKey = complejidadSelect.value;
-            const porcentajeComplejidad = TABLAS_HAY.solucionProblemas.complejidad[complejidadKey] || 0.1;
-            
+            const porcentajeComplejidad = TABLAS_HAY.solucionProblemas.complejidad[complejidadKey];
+
             const marcoRefSelect = document.getElementById('marco-referencia');
             const marcoRefKey = marcoRefSelect.value;
-            const porcentajeMarcoRef = TABLAS_HAY.solucionProblemas.marcoReferencia[marcoRefKey] || 0.1;
-            
-            const problemasScore = Math.round(knowHowScore * porcentajeComplejidad * porcentajeMarcoRef * 100);
+            const porcentajeMarcoRef = parseFloat(marcoRefKey);
+
+            const problemasScore = Math.round(knowHowScore * porcentajeComplejidad * porcentajeMarcoRef);
             
             // 3. Calcular Responsabilidad
             const libertadSelect = document.getElementById('libertad-actuar');
             const libertadKey = libertadSelect.value;
             const libertadValues = TABLAS_HAY.responsabilidad.libertad[libertadKey] || [0, 0, 0, 0, 0, 0];
-            
+
             const impactoSelect = document.getElementById('naturaleza-impacto');
             const impactoKey = impactoSelect.value;
             const impactoIndex = TABLAS_HAY.responsabilidad.impacto[impactoKey] || 0;
-            
+
             const magnitudSelect = document.getElementById('magnitud');
             const magnitudKey = magnitudSelect.value;
             const magnitudIndex = TABLAS_HAY.responsabilidad.magnitud[magnitudKey] || 0;
-            
+
             // Asegurarse de que los índices no excedan los límites
             const index = Math.min(impactoIndex + magnitudIndex, libertadValues.length - 1);
             const responsabilidadScore = libertadValues[index] || 0;
