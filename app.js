@@ -47,24 +47,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Tablas de referencia según metodología HAY
     const TABLAS_HAY = {
-        // Tabla de Know-How (basada en la hoja "Know-How" del Excel)
         knowHow: {
-            // Competencia Técnica/Especializada
             competencia: {
                 'A': 38, 'B': 43, 'C': 50, 'D': 57, 'E': 66, 'F': 76, 'G': 87, 'H': 100
             },
             
-            // Planificación, Organización e Integración
             planificacion: {
                 '1': 'T', '2': 'I', '3': 'II', '4': 'III', '5': 'IV'
             },
             
-            // Comunicación e Influencia
             comunicacion: {
                 '1': '1', '2': '2', '3': '3'
             },
             
-            // Factores multiplicadores según combinación
             factores: {
                 'T': { '1': 1.0, '2': 1.1, '3': 1.2 },
                 'I': { '1': 1.1, '2': 1.2, '3': 1.3 },
@@ -74,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         
-        // Tabla de Solución de Problemas (basada en la hoja "Solución de Problemas" del Excel)
         solucionProblemas: {
             complejidad: {
                 '1': 0.1, '2': 0.12, '3': 0.14, '4': 0.16, '5': 0.19
@@ -86,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         
-        // Tabla de Responsabilidad (basada en la hoja "Responsabilidad" del Excel)
         responsabilidad: {
             libertad: {
                 '8': 'A', '10': 'B', '12': 'C', '14': 'D', '16': 'E', '19': 'F', '22': 'G', '25': 'H'
@@ -100,58 +93,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 '1': '1', '2': '2', '3': '3', '4': '4', '5': 'N'
             },
             
-            // Tabla de puntajes de responsabilidad
             puntajes: {
-                'A': { // Control Estricto
+                'A': {
                     'I': [8, 10, 14, 19, 25, 33],
                     'II': [10, 12, 16, 22, 29, 38],
                     'III': [14, 19, 25, 33, 43, 57],
                     'IV': [19, 25, 33, 43, 57, 76],
                     'V': [25, 33, 43, 57, 76, 100]
                 },
-                'B': { // Control
+                'B': {
                     'I': [10, 12, 16, 22, 29, 38],
                     'II': [12, 14, 19, 25, 33, 43],
                     'III': [16, 22, 29, 38, 50, 66],
                     'IV': [22, 29, 38, 50, 66, 87],
                     'V': [29, 38, 50, 66, 87, 115]
                 },
-                'C': { // Estandarizado
+                'C': {
                     'I': [12, 14, 19, 25, 33, 43],
                     'II': [14, 16, 22, 29, 38, 50],
                     'III': [19, 25, 33, 43, 57, 76],
                     'IV': [25, 33, 43, 57, 76, 100],
                     'V': [33, 43, 57, 76, 100, 132]
                 },
-                'D': { // Regulación General
+                'D': {
                     'I': [14, 16, 22, 29, 38, 50],
                     'II': [16, 19, 25, 33, 43, 57],
                     'III': [22, 29, 38, 50, 66, 87],
                     'IV': [29, 38, 50, 66, 87, 115],
                     'V': [38, 50, 66, 87, 115, 152]
                 },
-                'E': { // Dirección
+                'E': {
                     'I': [16, 19, 25, 33, 43, 57],
                     'II': [19, 22, 29, 38, 50, 66],
                     'III': [25, 33, 43, 57, 76, 100],
                     'IV': [33, 43, 57, 76, 100, 132],
                     'V': [43, 57, 76, 100, 132, 175]
                 },
-                'F': { // Dirección General
+                'F': {
                     'I': [19, 22, 29, 38, 50, 66],
                     'II': [22, 25, 33, 43, 57, 76],
                     'III': [29, 38, 50, 66, 87, 115],
                     'IV': [38, 50, 66, 87, 115, 152],
                     'V': [50, 66, 87, 115, 152, 200]
                 },
-                'G': { // Guía
+                'G': {
                     'I': [22, 25, 33, 43, 57, 76],
                     'II': [25, 29, 38, 50, 66, 87],
                     'III': [33, 43, 57, 76, 100, 132],
                     'IV': [43, 57, 76, 100, 132, 175],
                     'V': [57, 76, 100, 132, 175, 230]
                 },
-                'H': { // Guía Estratégica
+                'H': {
                     'I': [25, 29, 38, 50, 66, 87],
                     'II': [29, 33, 43, 57, 76, 100],
                     'III': [38, 50, 66, 87, 115, 152],
@@ -161,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         
-        // Niveles HAY estándar
         nivelesHAY: [
             { min: 0, max: 100, nivel: "HAY I", descripcion: "Puestos operativos o técnicos" },
             { min: 101, max: 200, nivel: "HAY II", descripcion: "Profesionales junior" },
@@ -285,49 +276,62 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function calcularResultados() {
         try {
-            // 1. Calcular Know-How según metodología HAY
-            const competenciaValor = document.getElementById('competencia-tecnica').value;
-            const competencia = Object.keys(TABLAS_HAY.knowHow.competencia).find(key => 
-                TABLAS_HAY.knowHow.competencia[key] === parseInt(competenciaValor));
+            // 1. Calcular Know-How
+            const competenciaSelect = document.getElementById('competencia-tecnica');
+            const competenciaKey = competenciaSelect.options[competenciaSelect.selectedIndex].text.charAt(0);
+            const competenciaValue = TABLAS_HAY.knowHow.competencia[competenciaKey] || 0;
             
-            const planificacionValor = document.getElementById('planificacion').value;
-            const planificacion = TABLAS_HAY.knowHow.planificacion[planificacionValor];
+            const planificacionSelect = document.getElementById('planificacion');
+            const planificacionKey = planificacionSelect.value;
+            const planificacionLetter = TABLAS_HAY.knowHow.planificacion[planificacionKey];
             
-            const comunicacionValor = document.getElementById('comunicacion').value;
-            const comunicacion = TABLAS_HAY.knowHow.comunicacion[comunicacionValor];
+            const comunicacionSelect = document.getElementById('comunicacion');
+            const comunicacionKey = comunicacionSelect.value;
+            const comunicacionNumber = TABLAS_HAY.knowHow.comunicacion[comunicacionKey];
             
-            const baseKH = TABLAS_HAY.knowHow.competencia[competencia];
-            const factorKH = TABLAS_HAY.knowHow.factores[planificacion][comunicacion];
-            const knowHowScore = Math.round(baseKH * factorKH);
+            const factorKH = TABLAS_HAY.knowHow.factores[planificacionLetter][comunicacionNumber] || 1;
+            const knowHowScore = Math.round(competenciaValue * factorKH);
             
             // 2. Calcular Solución de Problemas
-            const complejidadValor = document.getElementById('complejidad').value;
-            const complejidad = complejidadValor[0]; // Obtener el número (1-5)
+            const complejidadSelect = document.getElementById('complejidad');
+            const complejidadKey = complejidadSelect.value;
+            const complejidadValue = TABLAS_HAY.solucionProblemas.complejidad[complejidadKey] || 0.1;
             
-            const marcoRefValor = document.getElementById('marco-referencia').value;
-            const marcoRef = TABLAS_HAY.solucionProblemas.marcoReferencia[marcoRefValor];
+            const marcoRefSelect = document.getElementById('marco-referencia');
+            const marcoRefValue = parseFloat(marcoRefSelect.value);
+            const marcoRefKey = TABLAS_HAY.solucionProblemas.marcoReferencia[marcoRefValue.toString()];
             
-            const factorSP = TABLAS_HAY.solucionProblemas.complejidad[complejidad] * 
-                             TABLAS_HAY.solucionProblemas.complejidad[complejidad]; // Usamos complejidad para ambos factores
-            const problemasScore = Math.round(knowHowScore * factorSP);
+            const problemasScore = Math.round(knowHowScore * complejidadValue * marcoRefValue);
             
             // 3. Calcular Responsabilidad
-            const libertadValor = document.getElementById('libertad-actuar').value;
-            const libertad = TABLAS_HAY.responsabilidad.libertad[libertadValor];
+            const libertadSelect = document.getElementById('libertad-actuar');
+            const libertadValue = parseInt(libertadSelect.value);
+            const libertadKey = TABLAS_HAY.responsabilidad.libertad[libertadValue.toString()];
             
-            const impactoValor = document.getElementById('naturaleza-impacto').value;
-            const impacto = TABLAS_HAY.responsabilidad.impacto[impactoValor];
+            const impactoSelect = document.getElementById('naturaleza-impacto');
+            const impactoKey = impactoSelect.value;
+            const impactoLetter = TABLAS_HAY.responsabilidad.impacto[impactoKey];
             
-            const magnitudValor = document.getElementById('magnitud').value;
-            const magnitud = TABLAS_HAY.responsabilidad.magnitud[magnitudValor];
+            const magnitudSelect = document.getElementById('magnitud');
+            const magnitudKey = magnitudSelect.value;
+            const magnitudLetter = TABLAS_HAY.responsabilidad.magnitud[magnitudKey];
             
             let magnitudIndex;
-            if (magnitud === 'N') magnitudIndex = 5; // Para magnitud no cuantificada
-            else magnitudIndex = parseInt(magnitud) - 1; // Convertir a índice (0-3)
+            if (magnitudLetter === 'N') {
+                magnitudIndex = 5;
+            } else {
+                magnitudIndex = parseInt(magnitudLetter) - 1;
+                if (magnitudIndex > 3) magnitudIndex = 3;
+            }
             
-            const responsabilidadScore = TABLAS_HAY.responsabilidad.puntajes[libertad][impacto][magnitudIndex];
+            let responsabilidadScore = 0;
+            if (TABLAS_HAY.responsabilidad.puntajes[libertadKey] && 
+                TABLAS_HAY.responsabilidad.puntajes[libertadKey][impactoLetter]) {
+                const puntajes = TABLAS_HAY.responsabilidad.puntajes[libertadKey][impactoLetter];
+                responsabilidadScore = puntajes[Math.min(magnitudIndex, puntajes.length - 1)] || 0;
+            }
             
-            // 4. Calcular total según fórmula HAY
+            // 4. Calcular total
             const total = knowHowScore + problemasScore + responsabilidadScore;
             
             // Mostrar resultados
@@ -347,6 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
             knowHowNivel.textContent = determinarNivelKnowHow(knowHowScore);
             problemasNivel.textContent = determinarNivelProblemas(problemasScore);
             responsabilidadNivel.textContent = determinarNivelResponsabilidad(responsabilidadScore);
+            
         } catch (error) {
             console.error('Error al calcular resultados:', error);
             mostrarNotificacion('Error al calcular los resultados. Por favor revise los datos ingresados.', 'error');
