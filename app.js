@@ -5,88 +5,55 @@ document.addEventListener('DOMContentLoaded', function() {
     // Elementos del DOM
     const navItems = document.querySelectorAll('.nav-menu li');
     const contentSections = document.querySelectorAll('.content-section');
-    const siguienteEvaluacionBtn = document.getElementById('siguiente-evaluacion');
+    
+    // Botones de navegación
+    const siguienteKnowHowBtn = document.getElementById('siguiente-know-how');
     const anteriorDescripcionBtn = document.getElementById('anterior-descripcion');
+    const siguienteSolucionBtn = document.getElementById('siguiente-solucion');
+    const anteriorKnowHowBtn = document.getElementById('anterior-know-how');
+    const siguienteResponsabilidadBtn = document.getElementById('siguiente-responsabilidad');
+    const anteriorSolucionBtn = document.getElementById('anterior-solucion');
     const siguienteResultadosBtn = document.getElementById('siguiente-resultados');
-    const anteriorEvaluacionBtn = document.getElementById('anterior-evaluacion');
+    const anteriorResponsabilidadBtn = document.getElementById('anterior-responsabilidad');
+    
+    // Botones de acción
     const guardarEvaluacionBtn = document.getElementById('guardar-evaluacion');
     const generarPdfBtn = document.getElementById('generar-pdf');
+    
+    // Modal
     const saveModal = document.getElementById('save-modal');
     const closeModalBtn = document.querySelector('.close-modal');
     const guardarPdfBtn = document.getElementById('guardar-pdf');
     const guardarLocalBtn = document.getElementById('guardar-local');
     const cancelarGuardarBtn = document.getElementById('cancelar-guardar');
+    
+    // Notificación
     const notification = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
+    
+    // Lista de evaluaciones
     const listaEvaluaciones = document.getElementById('lista-evaluaciones');
-
-    // Sliders de evaluación
-    const knowHowSlider = document.getElementById('know-how-slider');
-    const problemasSlider = document.getElementById('problemas-slider');
-    const responsabilidadSlider = document.getElementById('responsabilidad-slider');
-    const knowHowValue = document.getElementById('know-how-value');
-    const problemasValue = document.getElementById('problemas-value');
-    const responsabilidadValue = document.getElementById('responsabilidad-value');
-    const knowHowDescription = document.getElementById('know-how-description');
-    const problemasDescription = document.getElementById('problemas-description');
-    const responsabilidadDescription = document.getElementById('responsabilidad-description');
-
+    
     // Resultados
     const puntajeTotal = document.getElementById('puntaje-total');
     const nivelHay = document.getElementById('nivel-hay');
     const knowHowResult = document.getElementById('know-how-result');
     const problemasResult = document.getElementById('problemas-result');
     const responsabilidadResult = document.getElementById('responsabilidad-result');
+    const knowHowNivel = document.getElementById('know-how-nivel');
+    const problemasNivel = document.getElementById('problemas-nivel');
+    const responsabilidadNivel = document.getElementById('responsabilidad-nivel');
     const perfilSugerido = document.getElementById('perfil-sugerido');
-
-    // Descripciones de niveles
-    const knowHowDescriptions = {
-        1: "<strong>Nivel 1:</strong> Conocimientos básicos elementales.",
-        2: "<strong>Nivel 2:</strong> Conocimientos operativos básicos.",
-        3: "<strong>Nivel 3:</strong> Conocimientos técnicos o administrativos.",
-        4: "<strong>Nivel 4:</strong> Conocimiento profesional especializado en un área.",
-        5: "<strong>Nivel 5:</strong> Conocimiento profesional en múltiples áreas.",
-        6: "<strong>Nivel 6:</strong> Conocimiento experto en un campo especializado.",
-        7: "<strong>Nivel 7:</strong> Conocimiento experto en múltiples campos.",
-        8: "<strong>Nivel 8:</strong> Conocimiento estratégico y de liderazgo."
-    };
-
-    const problemasDescriptions = {
-        1: "<strong>Nivel 1:</strong> Problemas rutinarios con soluciones definidas.",
-        2: "<strong>Nivel 2:</strong> Problemas que requieren interpretación de instrucciones.",
-        3: "<strong>Nivel 3:</strong> Problemas que requieren selección entre alternativas.",
-        4: "<strong>Nivel 4:</strong> Problemas que requieren análisis e interpretación de datos.",
-        5: "<strong>Nivel 5:</strong> Problemas complejos que requieren evaluación de múltiples factores.",
-        6: "<strong>Nivel 6:</strong> Problemas que requieren pensamiento estratégico.",
-        7: "<strong>Nivel 7:</strong> Problemas altamente complejos con impacto organizacional.",
-        8: "<strong>Nivel 8:</strong> Problemas estratégicos con impacto a largo plazo."
-    };
-
-    const responsabilidadDescriptions = {
-        1: "<strong>Nivel 1:</strong> Responsabilidad por tareas específicas bajo supervisión.",
-        2: "<strong>Nivel 2:</strong> Responsabilidad por resultados de tareas individuales.",
-        3: "<strong>Nivel 3:</strong> Responsabilidad por resultados de un proceso o función.",
-        4: "<strong>Nivel 4:</strong> Responsabilidad por resultados de un departamento o área.",
-        5: "<strong>Nivel 5:</strong> Responsabilidad por resultados de múltiples áreas.",
-        6: "<strong>Nivel 6:</strong> Responsabilidad por resultados organizacionales significativos.",
-        7: "<strong>Nivel 7:</strong> Responsabilidad por toda la organización.",
-        8: "<strong>Nivel 8:</strong> Responsabilidad estratégica y de liderazgo máximo."
-    };
-
-    const perfilesSugeridos = {
-        "8-12": "Perfil operativo o técnico con responsabilidad limitada.",
-        "13-17": "Profesional especializado con responsabilidad sobre procesos específicos.",
-        "18-21": "Mando medio con responsabilidad sobre áreas o departamentos.",
-        "22-25": "Alta dirección con responsabilidad estratégica y organizacional."
-    };
-
-    const nivelesHAY = {
-        "8-12": "Nivel Básico",
-        "13-17": "Nivel Medio",
-        "18-21": "Nivel Alto",
-        "22-25": "Nivel Ejecutivo"
-    };
-
+    
+    // Niveles HAY basados en el puntaje total
+    const nivelesHAY = [
+        { min: 0, max: 100, nivel: "Operativo/Técnico", descripcion: "Puestos operativos con responsabilidad limitada" },
+        { min: 101, max: 200, nivel: "Profesional Especializado", descripcion: "Profesionales con responsabilidad sobre procesos específicos" },
+        { min: 201, max: 350, nivel: "Mando Medio", descripcion: "Puestos con responsabilidad sobre áreas o departamentos" },
+        { min: 351, max: 528, nivel: "Alta Dirección", descripcion: "Puestos con responsabilidad estratégica y organizacional" },
+        { min: 529, max: 1400, nivel: "Dirección Ejecutiva", descripcion: "Máxima responsabilidad estratégica en la organización" }
+    ];
+    
     // Navegación
     navItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -96,82 +63,82 @@ document.addEventListener('DOMContentLoaded', function() {
             navItems.forEach(navItem => navItem.classList.remove('active'));
             this.classList.add('active');
             
-            if (sectionId === 'evaluaciones-guardadas') {
+            if (sectionId === 'evaluaciones') {
                 cargarEvaluacionesGuardadas();
             }
         });
     });
-
+    
     // Botones de navegación
-    siguienteEvaluacionBtn.addEventListener('click', function() {
+    siguienteKnowHowBtn.addEventListener('click', function() {
         if (validarDescripcionPuesto()) {
-            showSection('evaluacion-hay');
+            showSection('know-how');
         }
     });
-
+    
     anteriorDescripcionBtn.addEventListener('click', function() {
-        showSection('descripcion-puesto');
+        showSection('descripcion');
     });
-
+    
+    siguienteSolucionBtn.addEventListener('click', function() {
+        showSection('solucion-problemas');
+    });
+    
+    anteriorKnowHowBtn.addEventListener('click', function() {
+        showSection('know-how');
+    });
+    
+    siguienteResponsabilidadBtn.addEventListener('click', function() {
+        showSection('responsabilidad');
+    });
+    
+    anteriorSolucionBtn.addEventListener('click', function() {
+        showSection('solucion-problemas');
+    });
+    
     siguienteResultadosBtn.addEventListener('click', function() {
         calcularResultados();
         showSection('resultados');
     });
-
-    anteriorEvaluacionBtn.addEventListener('click', function() {
-        showSection('evaluacion-hay');
+    
+    anteriorResponsabilidadBtn.addEventListener('click', function() {
+        showSection('responsabilidad');
     });
-
-    // Sliders
-    knowHowSlider.addEventListener('input', function() {
-        knowHowValue.textContent = this.value;
-        knowHowDescription.innerHTML = knowHowDescriptions[this.value];
-    });
-
-    problemasSlider.addEventListener('input', function() {
-        problemasValue.textContent = this.value;
-        problemasDescription.innerHTML = problemasDescriptions[this.value];
-    });
-
-    responsabilidadSlider.addEventListener('input', function() {
-        responsabilidadValue.textContent = this.value;
-        responsabilidadDescription.innerHTML = responsabilidadDescriptions[this.value];
-    });
-
-    // Guardar y generar PDF
+    
+    // Botones de acción
     guardarEvaluacionBtn.addEventListener('click', function() {
         saveModal.style.display = 'flex';
     });
-
+    
     generarPdfBtn.addEventListener('click', function() {
         generarPDF();
     });
-
+    
     // Modal
     closeModalBtn.addEventListener('click', function() {
         saveModal.style.display = 'none';
     });
-
+    
     guardarPdfBtn.addEventListener('click', function() {
         generarPDF();
         saveModal.style.display = 'none';
     });
-
+    
     guardarLocalBtn.addEventListener('click', function() {
         guardarEnLocalStorage();
         saveModal.style.display = 'none';
     });
-
+    
     cancelarGuardarBtn.addEventListener('click', function() {
         saveModal.style.display = 'none';
     });
-
+    
     window.addEventListener('click', function(event) {
         if (event.target === saveModal) {
             saveModal.style.display = 'none';
         }
     });
-
+    
     // Funciones
     function showSection(sectionId) {
         contentSections.forEach(section => {
@@ -181,67 +148,128 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('data-section') === sectionId) {
-                item.classList.add('active');
-            }
-        });
+        // Scroll suave al inicio de la sección
+        document.querySelector(`#${sectionId}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
+    
     function validarDescripcionPuesto() {
         const nombrePuesto = document.getElementById('nombre-puesto').value.trim();
         const areaDepartamento = document.getElementById('area-departamento').value.trim();
         const descripcionGeneral = document.getElementById('descripcion-general').value.trim();
         const responsabilidades = document.getElementById('responsabilidades').value.trim();
-
+        
         if (!nombrePuesto || !areaDepartamento || !descripcionGeneral || !responsabilidades) {
             mostrarNotificacion('Por favor complete todos los campos requeridos', 'error');
             return false;
         }
-
+        
         return true;
     }
-
+    
     function calcularResultados() {
-        const knowHow = parseInt(knowHowSlider.value);
-        const problemas = parseInt(problemasSlider.value);
-        const responsabilidad = parseInt(responsabilidadSlider.value);
-        const total = knowHow + problemas + responsabilidad;
+        // Obtener valores de Know-How
+        const competenciaTecnica = parseInt(document.getElementById('competencia-tecnica').value);
+        const planificacion = parseInt(document.getElementById('planificacion').value);
+        const comunicacion = parseInt(document.getElementById('comunicacion').value);
         
-        knowHowResult.textContent = knowHow;
-        problemasResult.textContent = problemas;
-        responsabilidadResult.textContent = responsabilidad;
-        puntajeTotal.textContent = total;
-        
-        let nivel = '';
-        let perfil = '';
-        
-        if (total >= 8 && total <= 12) {
-            nivel = nivelesHAY["8-12"];
-            perfil = perfilesSugeridos["8-12"];
-        } else if (total >= 13 && total <= 17) {
-            nivel = nivelesHAY["13-17"];
-            perfil = perfilesSugeridos["13-17"];
-        } else if (total >= 18 && total <= 21) {
-            nivel = nivelesHAY["18-21"];
-            perfil = perfilesSugeridos["18-21"];
-        } else if (total >= 22 && total <= 25) {
-            nivel = nivelesHAY["22-25"];
-            perfil = perfilesSugeridos["22-25"];
+        // Calcular Know-How según tabla
+        let knowHowScore = 0;
+        if (planificacion === 1) {
+            knowHowScore = competenciaTecnica;
+        } else if (planificacion === 2) {
+            knowHowScore = competenciaTecnica + (comunicacion === 1 ? 5 : comunicacion === 2 ? 7 : 10);
+        } else if (planificacion === 3) {
+            knowHowScore = competenciaTecnica + (comunicacion === 1 ? 10 : comunicacion === 2 ? 15 : 20);
+        } else if (planificacion === 4) {
+            knowHowScore = competenciaTecnica + (comunicacion === 1 ? 15 : comunicacion === 2 ? 20 : 25);
+        } else if (planificacion === 5) {
+            knowHowScore = competenciaTecnica + (comunicacion === 1 ? 20 : comunicacion === 2 ? 25 : 30);
         }
         
-        nivelHay.textContent = nivel;
-        perfilSugerido.textContent = perfil;
+        // Obtener valores de Solución de Problemas
+        const complejidad = parseInt(document.getElementById('complejidad').value);
+        const marcoReferencia = parseFloat(document.getElementById('marco-referencia').value);
+        
+        // Calcular Solución de Problemas según tabla
+        const problemasScore = knowHowScore * marcoReferencia;
+        
+        // Obtener valores de Responsabilidad
+        const libertadActuar = parseInt(document.getElementById('libertad-actuar').value);
+        const naturalezaImpacto = parseInt(document.getElementById('naturaleza-impacto').value);
+        const magnitud = parseInt(document.getElementById('magnitud').value);
+        
+        // Calcular Responsabilidad según tabla
+        let responsabilidadScore = 0;
+        if (magnitud === 1) {
+            responsabilidadScore = libertadActuar + (naturalezaImpacto * 5);
+        } else if (magnitud === 2) {
+            responsabilidadScore = libertadActuar + (naturalezaImpacto * 10);
+        } else if (magnitud === 3) {
+            responsabilidadScore = libertadActuar + (naturalezaImpacto * 15);
+        } else if (magnitud === 4) {
+            responsabilidadScore = libertadActuar + (naturalezaImpacto * 20);
+        } else {
+            responsabilidadScore = libertadActuar + (naturalezaImpacto * 25);
+        }
+        
+        // Calcular total
+        const total = Math.round(knowHowScore + problemasScore + responsabilidadScore);
+        
+        // Mostrar resultados
+        knowHowResult.textContent = Math.round(knowHowScore);
+        problemasResult.textContent = Math.round(problemasScore);
+        responsabilidadResult.textContent = Math.round(responsabilidadScore);
+        puntajeTotal.textContent = total;
+        
+        // Determinar niveles
+        knowHowNivel.textContent = obtenerNivelKnowHow(knowHowScore);
+        problemasNivel.textContent = obtenerNivelProblemas(problemasScore);
+        responsabilidadNivel.textContent = obtenerNivelResponsabilidad(responsabilidadScore);
+        
+        // Determinar nivel HAY y perfil sugerido
+        const nivel = nivelesHAY.find(n => total >= n.min && total <= n.max);
+        if (nivel) {
+            nivelHay.textContent = nivel.nivel;
+            perfilSugerido.textContent = nivel.descripcion;
+        } else {
+            nivelHay.textContent = "No determinado";
+            perfilSugerido.textContent = "Complete la evaluación para ver el perfil sugerido";
+        }
     }
-
+    
+    function obtenerNivelKnowHow(puntaje) {
+        if (puntaje <= 50) return "Básico";
+        if (puntaje <= 100) return "Introductorio";
+        if (puntaje <= 200) return "Intermedio";
+        if (puntaje <= 350) return "Avanzado";
+        if (puntaje <= 528) return "Experto";
+        return "Referente";
+    }
+    
+    function obtenerNivelProblemas(puntaje) {
+        if (puntaje <= 25) return "Repetitivo";
+        if (puntaje <= 50) return "Rutinario";
+        if (puntaje <= 100) return "Variable";
+        if (puntaje <= 200) return "Adaptativo";
+        return "Estratégico";
+    }
+    
+    function obtenerNivelResponsabilidad(puntaje) {
+        if (puntaje <= 50) return "Controlado";
+        if (puntaje <= 100) return "Supervisado";
+        if (puntaje <= 200) return "Autónomo";
+        if (puntaje <= 350) return "Directivo";
+        return "Estratégico";
+    }
+    
     function generarPDF() {
+        // Obtener datos del formulario
         const nombrePuesto = document.getElementById('nombre-puesto').value;
         const areaDepartamento = document.getElementById('area-departamento').value;
         const descripcionGeneral = document.getElementById('descripcion-general').value;
-        const responsabilidades = document.getElementById('responsabilidades').value.split('\n').filter(item => item.trim() !== '');
-        const fechaFormateada = new Date().toLocaleDateString('es-ES');
+        const responsabilidades = document.getElementById('responsabilidades').value.split('\n');
         
+        // Obtener resultados
         const knowHow = knowHowResult.textContent;
         const problemas = problemasResult.textContent;
         const responsabilidad = responsabilidadResult.textContent;
@@ -249,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const nivel = nivelHay.textContent;
         const perfil = perfilSugerido.textContent;
         
+        // Crear PDF
         const doc = new jsPDF();
         
         // Portada
@@ -262,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.setFontSize(14);
         doc.setTextColor(100, 100, 100);
         doc.text(`Área/Departamento: ${areaDepartamento}`, 105, 65, { align: 'center' });
-        doc.text(`Fecha de Evaluación: ${fechaFormateada}`, 105, 75, { align: 'center' });
+        doc.text(`Fecha de Evaluación: ${new Date().toLocaleDateString('es-ES')}`, 105, 75, { align: 'center' });
         
         // Resultados
         doc.addPage();
@@ -270,14 +299,15 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.setTextColor(44, 62, 80);
         doc.text('Resultados de la Evaluación', 20, 30);
         
+        // Tabla de resultados
         doc.autoTable({
             startY: 40,
-            head: [['Factor', 'Puntaje']],
+            head: [['Factor', 'Puntaje', 'Nivel']],
             body: [
-                ['Know-How', knowHow],
-                ['Resolución de Problemas', problemas],
-                ['Responsabilidad', responsabilidad],
-                ['TOTAL', { content: total, styles: { fontStyle: 'bold' } }]
+                ['Know-How', knowHow, knowHowNivel.textContent],
+                ['Solución de Problemas', problemas, problemasNivel.textContent],
+                ['Responsabilidad', responsabilidad, responsabilidadNivel.textContent],
+                ['TOTAL', { content: total, styles: { fontStyle: 'bold' } }, nivel]
             ],
             theme: 'grid',
             headStyles: {
@@ -290,11 +320,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Perfil sugerido
         doc.setFontSize(14);
-        doc.text(`Nivel HAY: ${nivel}`, 20, doc.autoTable.previous.finalY + 20);
-        doc.text(`Perfil Sugerido: ${perfil}`, 20, doc.autoTable.previous.finalY + 30);
+        doc.text(`Perfil Sugerido: ${perfil}`, 20, doc.autoTable.previous.finalY + 20);
         
-        // Descripción
+        // Descripción del puesto
         doc.addPage();
         doc.setFontSize(18);
         doc.setTextColor(44, 62, 80);
@@ -308,37 +338,50 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let yPos = doc.previousAutoTable ? doc.previousAutoTable.finalY + 40 : 110;
         responsabilidades.forEach(responsabilidad => {
-            doc.setFontSize(12);
-            doc.text('• ' + responsabilidad.trim(), 25, yPos, { maxWidth: 160 });
-            yPos += 7;
+            if (responsabilidad.trim()) {
+                doc.setFontSize(12);
+                doc.text('• ' + responsabilidad.trim(), 25, yPos, { maxWidth: 160 });
+                yPos += 7;
+            }
         });
         
+        // Guardar PDF
         doc.save(`Evaluacion_HAY_${nombrePuesto.replace(/ /g, '_')}.pdf`);
         mostrarNotificacion('PDF generado con éxito', 'success');
     }
-
+    
     function guardarEnLocalStorage() {
+        // Obtener datos del formulario
+        const nombrePuesto = document.getElementById('nombre-puesto').value;
+        const areaDepartamento = document.getElementById('area-departamento').value;
+        const descripcionGeneral = document.getElementById('descripcion-general').value;
+        const responsabilidades = document.getElementById('responsabilidades').value;
+        
+        // Obtener resultados
         const evaluacion = {
             id: Date.now(),
-            nombrePuesto: document.getElementById('nombre-puesto').value,
-            areaDepartamento: document.getElementById('area-departamento').value,
-            descripcionGeneral: document.getElementById('descripcion-general').value,
-            responsabilidades: document.getElementById('responsabilidades').value,
+            nombrePuesto,
+            areaDepartamento,
+            descripcionGeneral,
+            responsabilidades,
             knowHow: knowHowResult.textContent,
             problemas: problemasResult.textContent,
             responsabilidad: responsabilidadResult.textContent,
             total: puntajeTotal.textContent,
             nivel: nivelHay.textContent,
             perfil: perfilSugerido.textContent,
-            fechaGuardado: new Date().toISOString()
+            fecha: new Date().toISOString()
         };
         
+        // Guardar en localStorage
         let evaluaciones = JSON.parse(localStorage.getItem('evaluacionesHAY')) || [];
         evaluaciones.push(evaluacion);
         localStorage.setItem('evaluacionesHAY', JSON.stringify(evaluaciones));
+        
         mostrarNotificacion('Evaluación guardada localmente', 'success');
+        cargarEvaluacionesGuardadas();
     }
-
+    
     function cargarEvaluacionesGuardadas() {
         const evaluaciones = JSON.parse(localStorage.getItem('evaluacionesHAY')) || [];
         
@@ -349,8 +392,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         listaEvaluaciones.innerHTML = '';
         
-        evaluaciones.sort((a, b) => new Date(b.fechaGuardado) - new Date(a.fechaGuardado)).forEach(evaluacion => {
-            const fechaGuardado = new Date(evaluacion.fechaGuardado).toLocaleString('es-ES');
+        evaluaciones.sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).forEach(evaluacion => {
+            const fecha = new Date(evaluacion.fecha).toLocaleDateString('es-ES');
             
             const evaluacionElement = document.createElement('div');
             evaluacionElement.className = 'evaluation-item';
@@ -358,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="evaluation-info">
                     <h3>${evaluacion.nombrePuesto}</h3>
                     <p>${evaluacion.areaDepartamento} | Puntaje: ${evaluacion.total} (${evaluacion.nivel})</p>
-                    <p><small>Guardado el ${fechaGuardado}</small></p>
+                    <p><small>Evaluado el ${fecha}</small></p>
                 </div>
                 <div class="evaluation-actions">
                     <button class="btn-secondary" onclick="verEvaluacion(${evaluacion.id})">Ver</button>
@@ -369,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
             listaEvaluaciones.appendChild(evaluacionElement);
         });
     }
-
+    
     function mostrarNotificacion(mensaje, tipo = 'success') {
         notificationMessage.textContent = mensaje;
         
@@ -387,35 +430,33 @@ document.addEventListener('DOMContentLoaded', function() {
             notification.classList.remove('show');
         }, 3000);
     }
-
+    
     // Funciones globales
     window.verEvaluacion = function(id) {
         const evaluaciones = JSON.parse(localStorage.getItem('evaluacionesHAY')) || [];
         const evaluacion = evaluaciones.find(e => e.id === id);
         
         if (evaluacion) {
+            // Llenar descripción
             document.getElementById('nombre-puesto').value = evaluacion.nombrePuesto;
             document.getElementById('area-departamento').value = evaluacion.areaDepartamento;
             document.getElementById('descripcion-general').value = evaluacion.descripcionGeneral;
             document.getElementById('responsabilidades').value = evaluacion.responsabilidades;
             
-            knowHowSlider.value = evaluacion.knowHow;
-            problemasSlider.value = evaluacion.problemas;
-            responsabilidadSlider.value = evaluacion.responsabilidad;
+            // Mostrar resultados
+            knowHowResult.textContent = evaluacion.knowHow;
+            problemasResult.textContent = evaluacion.problemas;
+            responsabilidadResult.textContent = evaluacion.responsabilidad;
+            puntajeTotal.textContent = evaluacion.total;
+            nivelHay.textContent = evaluacion.nivel;
+            perfilSugerido.textContent = evaluacion.perfil;
             
-            knowHowValue.textContent = evaluacion.knowHow;
-            problemasValue.textContent = evaluacion.problemas;
-            responsabilidadValue.textContent = evaluacion.responsabilidad;
-            knowHowDescription.innerHTML = knowHowDescriptions[evaluacion.knowHow];
-            problemasDescription.innerHTML = problemasDescriptions[evaluacion.problemas];
-            responsabilidadDescription.innerHTML = responsabilidadDescriptions[evaluacion.responsabilidad];
-            
-            calcularResultados();
+            // Ir a resultados
             showSection('resultados');
-            mostrarNotificacion(`Evaluación de "${evaluacion.nombrePuesto}" cargada`, 'success');
+            mostrarNotificacion(`Evaluación de "${evaluacion.nombrePuesto}" cargada`);
         }
     };
-
+    
     window.eliminarEvaluacion = function(id) {
         if (confirm('¿Está seguro que desea eliminar esta evaluación?')) {
             let evaluaciones = JSON.parse(localStorage.getItem('evaluacionesHAY')) || [];
@@ -425,12 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarNotificacion('Evaluación eliminada', 'success');
         }
     };
-
+    
     // Inicialización
-    knowHowValue.textContent = knowHowSlider.value;
-    problemasValue.textContent = problemasSlider.value;
-    responsabilidadValue.textContent = responsabilidadSlider.value;
-    knowHowDescription.innerHTML = knowHowDescriptions[knowHowSlider.value];
-    problemasDescription.innerHTML = problemasDescriptions[problemasSlider.value];
-    responsabilidadDescription.innerHTML = responsabilidadDescriptions[responsabilidadSlider.value];
+    cargarEvaluacionesGuardadas();
 });

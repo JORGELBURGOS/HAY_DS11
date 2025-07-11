@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluación de Puestos - Metodología HAY</title>
+    <title>Sistema de Evaluación HAY</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,106 +13,182 @@
     <div class="container">
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="logo.png" alt="Logo" class="logo" id="logo-img">
+                <h2>Evaluación HAY</h2>
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li class="active" data-section="descripcion-puesto"><a href="#">Descripción del Puesto</a></li>
-                    <li data-section="evaluacion-hay"><a href="#">Evaluación HAY</a></li>
+                    <li class="active" data-section="descripcion"><a href="#">Descripción del Puesto</a></li>
+                    <li data-section="know-how"><a href="#">Know-How</a></li>
+                    <li data-section="solucion-problemas"><a href="#">Solución de Problemas</a></li>
+                    <li data-section="responsabilidad"><a href="#">Responsabilidad</a></li>
                     <li data-section="resultados"><a href="#">Resultados</a></li>
-                    <li data-section="evaluaciones-guardadas"><a href="#">Evaluaciones Guardadas</a></li>
+                    <li data-section="evaluaciones"><a href="#">Evaluaciones</a></li>
                 </ul>
             </nav>
         </aside>
 
         <main class="main-content">
-            <section id="descripcion-puesto" class="content-section active">
+            <!-- Sección Descripción del Puesto -->
+            <section id="descripcion" class="content-section active">
                 <h1>Descripción del Puesto</h1>
                 <form id="descripcion-form">
                     <div class="form-group">
-                        <label for="nombre-puesto">Nombre del Puesto</label>
+                        <label for="nombre-puesto">Nombre del Puesto*</label>
                         <input type="text" id="nombre-puesto" required>
                     </div>
                     <div class="form-group">
-                        <label for="area-departamento">Área/Departamento</label>
+                        <label for="area-departamento">Área/Departamento*</label>
                         <input type="text" id="area-departamento" required>
                     </div>
                     <div class="form-group">
-                        <label for="descripcion-general">Descripción General</label>
+                        <label for="descripcion-general">Descripción General*</label>
                         <textarea id="descripcion-general" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="responsabilidades">Responsabilidades Principales (Separar por puntos)</label>
-                        <textarea id="responsabilidades" rows="6" placeholder="Ejemplo:&#10;- Responsabilidad 1&#10;- Responsabilidad 2" required></textarea>
+                        <label for="responsabilidades">Responsabilidades Principales* (una por línea)</label>
+                        <textarea id="responsabilidades" rows="6" required></textarea>
                     </div>
-                    <button type="button" id="siguiente-evaluacion" class="btn-primary">Siguiente: Evaluación HAY</button>
+                    <button type="button" id="siguiente-know-how" class="btn-primary">Siguiente: Know-How</button>
                 </form>
             </section>
 
-            <section id="evaluacion-hay" class="content-section">
-                <h1>Evaluación HAY</h1>
-                <div class="hay-factors">
-                    <div class="factor-card">
-                        <h2>Know-How</h2>
-                        <p>Conocimientos y habilidades necesarias para el puesto</p>
-                        <div class="slider-container">
-                            <input type="range" min="1" max="8" value="4" class="slider" id="know-how-slider">
-                            <div class="slider-labels">
-                                <span>1 - Básico</span>
-                                <span id="know-how-value">4</span>
-                                <span>8 - Experto</span>
-                            </div>
-                        </div>
-                        <div class="factor-description" id="know-how-description">
-                            <strong>Nivel 4:</strong> Conocimiento profesional especializado en un área.
-                        </div>
+            <!-- Sección Know-How -->
+            <section id="know-how" class="content-section">
+                <h1>Evaluación de Know-How</h1>
+                <div class="evaluation-grid">
+                    <div class="dimension">
+                        <h3>Competencia Técnica/Especializada</h3>
+                        <select id="competencia-tecnica" class="hay-select">
+                            <option value="38">A. Básico</option>
+                            <option value="43">B. Introductorio</option>
+                            <option value="50" selected>C. General/Proceso/Procedimiento</option>
+                            <option value="57">D. Avanzado</option>
+                            <option value="66">E. Especializado</option>
+                            <option value="76">F. Especialización Madura</option>
+                            <option value="87">G. Especialización Amplia</option>
+                            <option value="100">H. Referente</option>
+                        </select>
                     </div>
-
-                    <div class="factor-card">
-                        <h2>Resolución de Problemas</h2>
-                        <p>Complejidad en la toma de decisiones y solución de problemas</p>
-                        <div class="slider-container">
-                            <input type="range" min="1" max="8" value="4" class="slider" id="problemas-slider">
-                            <div class="slider-labels">
-                                <span>1 - Rutinario</span>
-                                <span id="problemas-value">4</span>
-                                <span>8 - Estratégico</span>
-                            </div>
-                        </div>
-                        <div class="factor-description" id="problemas-description">
-                            <strong>Nivel 4:</strong> Problemas que requieren análisis e interpretación de datos.
-                        </div>
+                    
+                    <div class="dimension">
+                        <h3>Competencia en Planificación, Organización e Integración</h3>
+                        <select id="planificacion" class="hay-select">
+                            <option value="1">1. T. Focalizado en tareas</option>
+                            <option value="2" selected>2. I. Específica</option>
+                            <option value="3">3. II. Homogénea/Relacionada</option>
+                            <option value="4">4. III. Heterogénea/Diversa</option>
+                            <option value="5">5. IV. Amplia</option>
+                        </select>
                     </div>
-
-                    <div class="factor-card">
-                        <h2>Responsabilidad</h2>
-                        <p>Impacto y autonomía en la toma de decisiones</p>
-                        <div class="slider-container">
-                            <input type="range" min="1" max="8" value="4" class="slider" id="responsabilidad-slider">
-                            <div class="slider-labels">
-                                <span>1 - Supervisado</span>
-                                <span id="responsabilidad-value">4</span>
-                                <span>8 - Directivo</span>
-                            </div>
-                        </div>
-                        <div class="factor-description" id="responsabilidad-description">
-                            <strong>Nivel 4:</strong> Responsabilidad por resultados de un departamento o área.
-                        </div>
+                    
+                    <div class="dimension">
+                        <h3>Competencia en Comunicación e Influencia</h3>
+                        <select id="comunicacion" class="hay-select">
+                            <option value="1">1. Comunica</option>
+                            <option value="2" selected>2. Razonamiento</option>
+                            <option value="3">3. Cambio de comportamientos</option>
+                        </select>
                     </div>
                 </div>
+                
                 <div class="buttons-container">
                     <button type="button" id="anterior-descripcion" class="btn-secondary">Anterior</button>
-                    <button type="button" id="siguiente-resultados" class="btn-primary">Siguiente: Ver Resultados</button>
+                    <button type="button" id="siguiente-solucion" class="btn-primary">Siguiente: Solución de Problemas</button>
                 </div>
             </section>
 
+            <!-- Sección Solución de Problemas -->
+            <section id="solucion-problemas" class="content-section">
+                <h1>Solución de Problemas</h1>
+                <div class="evaluation-grid">
+                    <div class="dimension">
+                        <h3>Complejidad de las Situaciones</h3>
+                        <select id="complejidad" class="hay-select">
+                            <option value="1">1. Repetitivo</option>
+                            <option value="2">2. Con modelos</option>
+                            <option value="3" selected>3. Variable</option>
+                            <option value="4">4. Adaptación</option>
+                            <option value="5">5. Sin precedentes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="dimension">
+                        <h3>Marco de Referencia - Libertad para Pensar</h3>
+                        <select id="marco-referencia" class="hay-select">
+                            <option value="0.1">A. Rutina Estricta</option>
+                            <option value="0.12">B. Rutina</option>
+                            <option value="0.14">C. Semi-Rutina</option>
+                            <option value="0.16" selected>D. Estandarizado</option>
+                            <option value="0.19">E. Definición Clara</option>
+                            <option value="0.22">F. Definición Amplia</option>
+                            <option value="0.25">G. Definición Genérica</option>
+                            <option value="0.29">H. Abstracto</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="buttons-container">
+                    <button type="button" id="anterior-know-how" class="btn-secondary">Anterior</button>
+                    <button type="button" id="siguiente-responsabilidad" class="btn-primary">Siguiente: Responsabilidad</button>
+                </div>
+            </section>
+
+            <!-- Sección Responsabilidad -->
+            <section id="responsabilidad" class="content-section">
+                <h1>Responsabilidad</h1>
+                <div class="evaluation-grid">
+                    <div class="dimension">
+                        <h3>Libertad para Actuar</h3>
+                        <select id="libertad-actuar" class="hay-select">
+                            <option value="8">A. Control Estricto</option>
+                            <option value="10">B. Control</option>
+                            <option value="12" selected>C. Estandarizado</option>
+                            <option value="14">D. Regulación General</option>
+                            <option value="16">E. Dirección</option>
+                            <option value="19">F. Dirección General</option>
+                            <option value="22">G. Guía</option>
+                            <option value="25">H. Guía Estratégica</option>
+                        </select>
+                    </div>
+                    
+                    <div class="dimension">
+                        <h3>Naturaleza del Impacto</h3>
+                        <select id="naturaleza-impacto" class="hay-select">
+                            <option value="1">I. Controlado</option>
+                            <option value="2">II. Consultivo</option>
+                            <option value="3" selected>III. Servicio/Asesoría</option>
+                            <option value="4">IV. Operativo</option>
+                            <option value="5">V. Consultivo Liderazgo</option>
+                            <option value="6">VI. Estratégico</option>
+                        </select>
+                    </div>
+                    
+                    <div class="dimension">
+                        <h3>Magnitud (Área de Influencia)</h3>
+                        <select id="magnitud" class="hay-select">
+                            <option value="1">1. Muy pequeño</option>
+                            <option value="2">2. Pequeño</option>
+                            <option value="3" selected>3. Medio</option>
+                            <option value="4">4. Grande</option>
+                            <option value="5">N. No cuantificada</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="buttons-container">
+                    <button type="button" id="anterior-solucion" class="btn-secondary">Anterior</button>
+                    <button type="button" id="siguiente-resultados" class="btn-primary">Ver Resultados</button>
+                </div>
+            </section>
+
+            <!-- Sección Resultados -->
             <section id="resultados" class="content-section">
                 <h1>Resultados de la Evaluación</h1>
                 <div class="results-container">
                     <div class="result-card">
                         <h2>Puntaje Total</h2>
-                        <div class="score" id="puntaje-total">12</div>
-                        <div class="hay-level" id="nivel-hay">Nivel Medio</div>
+                        <div class="score" id="puntaje-total">0</div>
+                        <div class="hay-level" id="nivel-hay">-</div>
                     </div>
                     
                     <div class="result-details">
@@ -121,36 +197,41 @@
                             <tr>
                                 <th>Factor</th>
                                 <th>Puntaje</th>
+                                <th>Nivel</th>
                             </tr>
                             <tr>
                                 <td>Know-How</td>
-                                <td id="know-how-result">4</td>
+                                <td id="know-how-result">0</td>
+                                <td id="know-how-nivel">-</td>
                             </tr>
                             <tr>
-                                <td>Resolución de Problemas</td>
-                                <td id="problemas-result">4</td>
+                                <td>Solución de Problemas</td>
+                                <td id="problemas-result">0</td>
+                                <td id="problemas-nivel">-</td>
                             </tr>
                             <tr>
                                 <td>Responsabilidad</td>
-                                <td id="responsabilidad-result">4</td>
+                                <td id="responsabilidad-result">0</td>
+                                <td id="responsabilidad-nivel">-</td>
                             </tr>
                         </table>
                     </div>
                     
                     <div class="profile-suggestion">
                         <h3>Perfil Sugerido</h3>
-                        <p id="perfil-sugerido">Profesional especializado con responsabilidad sobre procesos específicos.</p>
+                        <p id="perfil-sugerido">Complete la evaluación para ver el perfil sugerido</p>
                     </div>
                 </div>
                 
                 <div class="buttons-container">
-                    <button type="button" id="anterior-evaluacion" class="btn-secondary">Anterior</button>
+                    <button type="button" id="anterior-responsabilidad" class="btn-secondary">Anterior</button>
                     <button type="button" id="guardar-evaluacion" class="btn-primary">Guardar Evaluación</button>
                     <button type="button" id="generar-pdf" class="btn-primary">Generar PDF</button>
                 </div>
             </section>
 
-            <section id="evaluaciones-guardadas" class="content-section">
+            <!-- Sección Evaluaciones Guardadas -->
+            <section id="evaluaciones" class="content-section">
                 <h1>Evaluaciones Guardadas</h1>
                 <div class="saved-evaluations" id="lista-evaluaciones">
                     <p class="no-evaluations">No hay evaluaciones guardadas.</p>
@@ -159,6 +240,7 @@
         </main>
     </div>
 
+    <!-- Modal para guardar evaluación -->
     <div id="save-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -172,6 +254,7 @@
         </div>
     </div>
 
+    <!-- Notificación -->
     <div id="notification" class="notification">
         <span id="notification-message"></span>
     </div>
